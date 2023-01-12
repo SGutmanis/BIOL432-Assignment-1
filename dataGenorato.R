@@ -7,5 +7,5 @@ Limb_length<-round(runif(n = 100, min = .1, max = 15), digits = 2)
 Limb_length
 x2<-c("Grace C", "Tim B.", "Pauly D.")
 Observer<-sample(x2, 100, replace = T)
-MyData<-data.frame(Species_name, Limb_width, Limb_length, Observer) #combine in to a data frame
-write.csv(MyData,"measurements.csv",row.names=T) #export as a csv file
+MyData<-data.frame(Species_name, Limb_width, Limb_length, Observer)#combine in to a data frame
+write.csv(MyData,"measurements.csv", row.names = F) #export as a csv file, set row names to false to prevent additional column
