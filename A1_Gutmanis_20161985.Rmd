@@ -5,6 +5,8 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+[Github link]("https://github.com/Sgutmanis/BIOL432_Assignment1")
+
 ```{r}
 library("dplyr")
 library("ggplot2")
