@@ -1,0 +1,53 @@
+---
+title: "A1_Gutmanis_20161985"
+author: "Sam Gutmanis"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library("dplyr")
+library("ggplot2")
+library("tidyverse")
+source("http://bit.ly/theme_pub")
+theme_set(theme_pub()) #set the theme for future plots
+```
+
+#1. Load measurments data
+```{r}
+measurement<-read.csv("./measurements.csv")
+```
+#2. Sort data by species, then observer, then limb volume
+```{r}
+measurement<- measurement %>% 
+  arrange(Species_name,Observer,Volume)
+head(measurement) #check to see that data is sorted
+```
+#3. Create a table of the average species limb volumes
+```{r}
+Average_Limb_Volumes<- measurement %>% group_by(Species_name) %>% summarise(Mean_volume=mean(Volume))
+print(Average_Limb_Volumes) #examine table
+```
+#4. Create a table showing the number of observations for each combination of species and observer.
+```{r}
+UniqueObs<-measurement %>% count(Species_name,Observer)
+print(UniqueObs) #examine table
+```
+#5. Create a single box plot (or similar) to compare key features of the distributions of volumes for each species.
+```{r, fig.cap="Figure 1: A boxplot showing the ranges of limb volumes (measured in centimeters cubed which was calculated through limb length and limb width measurements) across 5 different species along the x axis; Boiga irregularis, Elephas maximus, Mus musculus, Rattus rattus, and Ursus maritimus."}
+#set source for theme
+ggplot(aes(x=Species_name,y=Volume), data=measurement) + 
+  geom_boxplot() +xlab("Species Name") +ylab(expression(paste("Volume ", cm^3)))
+```
+#6. Create a multi-panel plot showing frequency histograms for each species. Note that this may require you to add code to you R markdown file to change the data from the wide to long format.
+```{r}
+long<-pivot_longer(measurement, cols=c("Limb_width", "Limb_length", "Volume"), names_to = "varb", values_to = "val") #transform data to long format
+long <- long %>% select("Species_name", "varb", "val") #eliminate 
+```
+```{r, fig.cap="Figure 2: A multiplot of histograms showing the frequency of occurances for limb length, limb width, and limb volume (organized through 3 different plots horizontally) across 5 different species sorted vertically; Boiga irregularis, Elephas maximus, Mus musculus, Rattus rattus, and Ursus maritimus."}
+ggplot(aes(x=val), data=long) + geom_histogram() +facet_wrap(Species_name~varb, scales = "free", nrow = 5)
+```
+
+
+
+
