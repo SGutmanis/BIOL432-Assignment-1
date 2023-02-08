@@ -1,0 +1,22 @@
+---
+title: "Regex"
+author: "Sam Gutmanis"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r}
+library(dplyr)
+```
+
+Import your measurements.csv file from the Week 1 Assignment into an object called MData
+```{r}
+MData<-read.csv("./measurements.csv")
+```
+Use a dplyr command AND regular expression(s) to add a new column called Sp that shortens the genus name in the Organism column to only the first letter and period. For example: Homo sapiens in the original Organism column becomes H. sapiens in the Sp column. HINT: You can think of the regular expression commands like sub, grep, grepl and gsub as 'functions' that you can use with dplyr commands just like mean(), sd(), and desc() in the Data Science tutorial.
+```{r}
+MData %>% 
+  mutate(Sp = gsub("^([A-Za-z]).* ([A-Za-z]+)$", "\\1. \\2", Species_name))
+```
+
+Use a dplyr command to create a new dataset BUT with Sp column instead of the Organism column, moved to the beginning in place of the original Organism column.
+Save the dataset as a new file called MeasShort.csv
